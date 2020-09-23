@@ -9,7 +9,7 @@ client = gspread.authorize(creds)
 
 little_sheet = client.open('Test CSE Little Sign Up (Autumn 2020) (Responses)').sheet1
 big_sheet = client.open('Test Big Sign Up (Autumn 2020) (Responses)').sheet1
-matches = client.open('Testing Matches').sheet1
+matches = client.open('Testing Matches')
 
 littles = little_sheet.get_all_values()
 bigs = big_sheet.get_all_values()
@@ -19,6 +19,8 @@ d = {}
 mapping = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
 class_standings = ["Freshman", "Sophomore", "Junior", "Senior", "Other"]
+
+worksheet = matches.sheet1
 
 row = 1 # update for each little
 
@@ -32,7 +34,6 @@ for little in littles[1:len(littles)]:
     little_living = little[14].split(", ")
     row += 1
     col = 1
-    matches.update_cell(row, col, key)
     for big in bigs[1:len(bigs)]:
         # comparing class standing
         points = 0
@@ -72,18 +73,28 @@ for little in littles[1:len(littles)]:
                             if (little_int == big_int):
                                 points += 1
                     # add big to map
-                    if (points >= 10):
-                        mapping[key].append([points, big[7]])
+                    if (points >= 7):
+                        mapping[key].append(big[7])
     values = mapping[key]
-    for val in values:
-        col += 1
-        matches.update_cell(row, col, val[0])
-        col += 1
-        matches.update_cell(row, col, val[1])
-    print(key)
-    print(mapping[key])
-    print()
-        
+    col = 'B'
+    end_col = chr(ord('a') + len(values))
+    col_range = col + str(row) + ':' + end_col.capitalize() + str(row)
+    cell_list = worksheet.range(col_range)
+    for i, val in enumerate(values):
+        cell_list[i].value = val
+    if (len(cell_list) > 0):
+        worksheet.update_cells(cell_list)
+    
+
+row = 2
+for key in mapping:
+    worksheet.update_cell(row, 1, key)
+    row += 1
+
+
+
+
+
     
 
 
