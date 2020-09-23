@@ -75,11 +75,11 @@ for little in littles[1:len(littles)]:
                     if (points >= 10):
                         mapping[key].append([points, big[7]])
     values = mapping[key]
-   # for val in values:
-    #    col += 1
-     #   matches.update_cell(row, col, val[0])
-      #  col += 1
-       # matches.update_cell(row, col, val[1])
+    for val in values:
+        col += 1
+        matches.update_cell(row, col, val[0])
+        col += 1
+        matches.update_cell(row, col, val[1])
     print(key)
     print(mapping[key])
     print()
