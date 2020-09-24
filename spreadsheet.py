@@ -20,8 +20,7 @@ mapping = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
 class_standings = ["Freshman", "Sophomore", "Junior", "Senior", "Other"]
 
-#worksheet = matches.sheet1
-worksheet = client.open('Test Big Sign Up (Autumn 2020) (Responses)').get_worksheet(1)
+worksheet = matches.get_worksheet(1)
 
 row = 1 # update for each little
 
@@ -84,9 +83,8 @@ for little in littles[1:len(littles)]:
         mapping[key].append(big[1])
     # adding bigs to spreadsheet
     values = mapping[key]
-    col = 'B'
-    end_col = chr(ord('a') + len(values))
-    col_range = col + str(row) + ':' + end_col.capitalize() + str(row)
+    end_col = chr(ord('B') + len(values) - 1)
+    col_range = 'B' + str(row) + ':' + end_col + str(row)
     cell_list = worksheet.range(col_range)
     for i, val in enumerate(values):
         cell_list[i].value = val
@@ -95,10 +93,13 @@ for little in littles[1:len(littles)]:
     
 # adding littles to spreadsheet
 row = 2
-for key in mapping:
-    worksheet.update_cell(row, 1, key)
-    row += 1
-
+end_row = 2 + len(mapping.keys()) - 1
+row_range = 'A' + str(row) + ":" + 'A' + str(end_row)
+little_list = worksheet.range(row_range)
+for i, val in enumerate(mapping.keys()):
+    little_list[i].value = val
+if (len(little_list) > 0):
+    worksheet.update_cells(little_list)
 
 
 
