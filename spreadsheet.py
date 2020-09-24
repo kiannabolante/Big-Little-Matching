@@ -8,11 +8,22 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', s
 client = gspread.authorize(creds)
 
 little_sheet = client.open('Test CSE Little Sign Up (Autumn 2020) (Responses)').sheet1
-big_sheet = client.open('Test Big Sign Up (Autumn 2020) (Responses)').sheet1
+big_sheet = client.open('Test CSE Big Sign Up (Autumn 2020) (Responses)').sheet1
 matches = client.open('Testing Matches')
 
 littles = little_sheet.get_all_values()
 bigs = big_sheet.get_all_values()
+
+bigs_left = {""}
+
+# add all bigs to bigs left set
+for big in bigs[1:len(bigs)]:
+    bigs_left.add(big[7])
+
+bigs_left.discard("")
+
+print(bigs_left)
+print()
 
 d = {}
 
@@ -74,15 +85,18 @@ for little in littles[1:len(littles)]:
                             if (little_int == big_int):
                                 points += 1
                     # add big to map
-                    if (points >= 7):
-                       # mapping[key].append(big[7])
+                    if (points >= 11):
                        big_list.append([points, big[7]])
+                       bigs_left.discard(big[7])
     sorted_list = sorted(big_list, key=lambda x: x[0], reverse=True)  
     for big in sorted_list:
         mapping[key].append(big[0])
         mapping[key].append(big[1])
     # adding bigs to spreadsheet
     values = mapping[key]
+    if (len(values) > 25):
+        values = values[0:24]
+
     end_col = chr(ord('B') + len(values) - 1)
     col_range = 'B' + str(row) + ':' + end_col + str(row)
     cell_list = worksheet.range(col_range)
@@ -100,6 +114,8 @@ for i, val in enumerate(mapping.keys()):
     little_list[i].value = val
 if (len(little_list) > 0):
     worksheet.update_cells(little_list)
+
+print(bigs_left)
 
 
 
