@@ -20,7 +20,8 @@ mapping = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
 class_standings = ["Freshman", "Sophomore", "Junior", "Senior", "Other"]
 
-worksheet = matches.sheet1
+#worksheet = matches.sheet1
+worksheet = client.open('Test Big Sign Up (Autumn 2020) (Responses)').get_worksheet(1)
 
 row = 1 # update for each little
 
@@ -34,6 +35,7 @@ for little in littles[1:len(littles)]:
     little_living = little[14].split(", ")
     row += 1
     col = 1
+    big_list = []
     for big in bigs[1:len(bigs)]:
         # comparing class standing
         points = 0
@@ -74,7 +76,13 @@ for little in littles[1:len(littles)]:
                                 points += 1
                     # add big to map
                     if (points >= 7):
-                        mapping[key].append(big[7])
+                       # mapping[key].append(big[7])
+                       big_list.append([points, big[7]])
+    sorted_list = sorted(big_list, key=lambda x: x[0], reverse=True)  
+    for big in sorted_list:
+        mapping[key].append(big[0])
+        mapping[key].append(big[1])
+    # adding bigs to spreadsheet
     values = mapping[key]
     col = 'B'
     end_col = chr(ord('a') + len(values))
@@ -85,7 +93,7 @@ for little in littles[1:len(littles)]:
     if (len(cell_list) > 0):
         worksheet.update_cells(cell_list)
     
-
+# adding littles to spreadsheet
 row = 2
 for key in mapping:
     worksheet.update_cell(row, 1, key)
