@@ -34,6 +34,7 @@ def matchInterests(little_interests, big_interests):
             if (little_int == big_int):
                 points += 1
     return points
+    
 
 
 scope = ['https://spreadsheets.google.com/feeds' + ' ' +'https://www.googleapis.com/auth/drive']
@@ -49,6 +50,7 @@ bigs = big_sheet.get_all_values()
 
 bigs_left = {""}
 
+
 # add all bigs to bigs-left set
 for big in bigs[1:len(bigs)]:
     bigs_left.add(big[7])
@@ -59,13 +61,14 @@ d = {}
 
 mapping = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
-class_standings = ["Freshman", "Sophomore", "Junior", "Senior", "Other"]
+class_standings = ["Freshman", "Sophomore", "Junior", "Senior", "Other", "5th year"]
 
 worksheet = matches.get_worksheet(1)
 
 row = 1 # update for each little
 
 # matching each little 
+cell_list = []
 for little in littles[1:len(littles)]:
     key = little[7]
     mapping[key] = []
@@ -116,28 +119,29 @@ for little in littles[1:len(littles)]:
     for big in sorted_list:
         mapping[key].append(big[0]) # points
         mapping[key].append(big[1]) # cse email
-    # adding bigs to spreadsheet
     values = mapping[key]
-    # google sheets goes from A-Z
-    if (len(values) > 25):
-        values = values[0:24]
-
-    end_col = chr(ord('B') + len(values) - 1)
-    col_range = 'B' + str(row) + ':' + end_col + str(row)
-    cell_list = worksheet.range(col_range)
-    for i, val in enumerate(values):
-        cell_list[i].value = val
-    if (len(cell_list) > 0):
-        worksheet.update_cells(cell_list)
+    values = [key] + values
     
+    # google sheets goes from A-Z
+    if (len(values) > 26):
+        values = values[0:25]
+
+    end_col = chr(ord('A') + len(values) - 1)
+    col_range = 'A' + str(row) + ':' + end_col + str(row)
+    if (len(values) == 0):
+        col_range = 'A' + str(row)
+    curr_val = {'range': col_range, 'values': [values]}
+    cell_list.append(curr_val)
+
+# print(cell_list)
+
+# adding bigs
+worksheet.batch_update(cell_list)
 # adding littles to spreadsheet
-row = 2
-end_row = 2 + len(mapping.keys()) - 1
-row_range = 'A' + str(row) + ":" + 'A' + str(end_row)
-little_list = worksheet.range(row_range)
-for i, val in enumerate(mapping.keys()):
-    little_list[i].value = val
-if (len(little_list) > 0):
-    worksheet.update_cells(little_list)
+
 
 print(bigs_left)
+
+# row will always change col will be A
+
+
