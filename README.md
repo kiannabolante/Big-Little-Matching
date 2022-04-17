@@ -17,7 +17,9 @@ Set Up
   - Share created documents with "client-email" from client_secret.json
   - Change the Bigs Respsonse Form to "big_sheet" and Littles Responses Form to "little_sheet" so the client can find the correct sheets
   - Name the new sheet called "matches" (i.e. rankings of bigs against each little) and name the other sheet "Big / Little Pairing" to get each Littles paired to each Big
-  - Look through the "Big_Little_Matching.ipynb" or the Big_Little_Matching.py code and familarize with yoourself with the code
+  - Look through the "Big_Little_Matching.ipynb" or the "Big_Little_Matching.py" code and familarize with yourself with the code
+    - Use the ipynb file if you are using Jupyter Notebook and py file if you are using VSCode or other IDE
+    - The PDF is just for simple viewing!
   - If you run into an import error for oauth2client.service_account for pyparsing, call "pip install -U httplib2" in command line
   - There may be other bugs due to dependencies -- always use google and get answers from github, stackoverflow, or other forums
 
