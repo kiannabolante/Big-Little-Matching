@@ -1,5 +1,5 @@
 # Big-Little-Matching
-Big/Little Matching algorithm for UW ACM
+Big/Little Matching algorithm for UW ACM (2021 - 2022)
 
 Installation
   - Install Python3
@@ -37,3 +37,23 @@ Post-Script Checks
 - Personally, I like to check the demographics in particularly and move some people around. It doesn't have to be perfect since that's nearly impossible (as we match on so many criterias). But refer to the matching rankings and move people around. 
 
 If you have any question, please send an email to hjung10@cs.washington.edu or the current Vice Chair
+
+Kianna’s Big/Little Matching Notes (2022 - 2023):
+
+- Follow the installation above
+- Follow set up (big_sheet, little_sheet, matches, Big / Little Pairing) above
+- “Share created documents with ‘client-email’ from client_secret.json
+    - Helpful video: https://www.youtube.com/watch?v=ddf5Z0aQPzY
+    - console.developers.google.com
+      - Create new project
+      - Enable google drive/google sheets API
+      - Credentials tab
+          - Create credentials
+          - Create Service account
+          - Create key (JSON)
+              - Suggestion: Put everything in a folder
+   - Share email within downloaded JSON file key to all Google sheet folders (“client email” line in file)
+- Change “creds =“ JSON file name to new version
+- Double check column indexing
+- Run cells one by one
+- Cross-check matchings
