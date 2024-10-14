@@ -4,7 +4,8 @@
 # In[41]:
 
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+# from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials as ServiceAccountCredentials
 from collections import OrderedDict
 import pprint
 
@@ -62,7 +63,8 @@ def matching(littles, bigs, point):
 
 # setting up the authorization so we can edit the google spreadsheet using some python libraries :)
 scope = ['https://spreadsheets.google.com/feeds' + ' ' +'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+# creds = ServiceAccountCredentials.from_json_keyfile_name('big-little-sp24-36cc5eb36d92.json', scope)
+creds = ServiceAccountCredentials.from_service_account_file('big-little-sp24-36cc5eb36d92.json', scopes=scope)
 client = gspread.authorize(creds)
 
 
@@ -186,7 +188,7 @@ for little in littles[1:len(littles)]:
     little_q7 = little[27]
     little_q8 = little[28]
     little_q9 = little[29]
-    little_q10 = little[30]
+    # little_q10 = little[30]
 
     # make sure to increment this so that we are parsing through each little
     row += 1
@@ -227,7 +229,7 @@ for little in littles[1:len(littles)]:
                 big_q7 = big[27]
                 big_q8 = big[28]
                 big_q9 = big[29]
-                big_q10 = big[30]
+                # big_q10 = big[30]
 
 
                 # this part is important as this determines how much point we give for each category
@@ -251,7 +253,7 @@ for little in littles[1:len(littles)]:
                 points += matching(big_q7, little_q7, 0.5)
                 points += matching(big_q8, little_q8, 0.5)
                 points += matching(big_q9, little_q9, 0.5)
-                points += matching(big_q10, little_q10, 0.5)
+                # points += matching(big_q10, little_q10, 0.5)
 
                 # add big to map
                 big_list.append([points, big[1]])
